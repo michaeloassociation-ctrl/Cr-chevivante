@@ -2,9 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.querySelector('header');
-  const burger = document.querySelector('.burger');
-  const nav = document.querySelector('.main-nav');
-  const backdrop = document.querySelector('.nav-backdrop');
 
   // Header solid on scroll
   const onScroll = () => {
@@ -16,39 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
-
-  // Mobile nav toggle
-  const closeNav = () => {
-    nav.classList.remove('open');
-    burger.classList.remove('active');
-    if (backdrop) backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-  const openNav = () => {
-    nav.classList.add('open');
-    burger.classList.add('active');
-    if (backdrop) backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  };
-
-  if (burger) {
-    burger.addEventListener('click', () => {
-      if (nav.classList.contains('open')) {
-        closeNav();
-      } else {
-        openNav();
-      }
-    });
-  }
-  if (backdrop) {
-    backdrop.addEventListener('click', closeNav);
-  }
-  document.querySelectorAll('.main-nav a').forEach(link => {
-    link.addEventListener('click', closeNav);
-  });
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 980) closeNav();
-  });
 
   // Scroll reveal
   const revealEls = document.querySelectorAll('.reveal');

@@ -105,7 +105,13 @@ h1,h2,h3,h4{ margin: 0; font-family: var(--font-title); font-weight: 400; letter
   .btn-outline:hover{ background: rgba(255,255,255,.12); border-color: var(--white); }
 }
 
-/* ---------- Header ---------- */
+/* ---------- Header ----------
+   No burger / off-canvas menu: on small screens the header keeps only
+   the logo and a single, always-visible "Participer" call-to-action.
+   The full text navigation (Le projet / Programme / etc.) only appears
+   once there is enough room for it, at the desktop breakpoint — this
+   avoids shipping a hamburger interaction that doesn't add value on
+   a single-page site where scrolling already reveals every section. */
 header{
   position: fixed;
   top:0; left:0; right:0;
@@ -113,71 +119,30 @@ header{
   padding: 14px 0;
   transition: background var(--transition), padding var(--transition), box-shadow var(--transition);
 }
-header .container{ display:flex; align-items:center; justify-content:space-between; }
+header .container{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
 header.scrolled{
   background: rgba(14,29,60,.94);
   backdrop-filter: blur(10px);
   padding: 9px 0;
   box-shadow: 0 8px 24px rgba(0,0,0,.22);
 }
-.brand{ display:flex; align-items:center; z-index: 1002; position:relative; }
+.brand{ display:flex; align-items:center; }
 .brand img{ height: 28px; width:auto; transition: height var(--transition); }
 header.scrolled .brand img{ height: 25px; }
 
-nav.main-nav{
-  position:fixed; top:0; right:0; height:100dvh; width:min(300px,78vw);
-  background: var(--navy);
-  display:flex; flex-direction:column; align-items:flex-start;
-  padding: 100px 30px 40px;
-  gap: 6px;
-  transform: translateX(100%);
-  transition: transform var(--transition);
-  box-shadow: -20px 0 60px rgba(0,0,0,.35);
-  z-index: 1001;
-  overflow-y: auto;
-}
-nav.main-nav.open{ transform: translateX(0); }
-nav.main-nav a{
+nav.main-nav{ display:none; align-items:center; gap: 40px; }
+
+.nav-cta{
+  padding: 11px 20px;
+  border: 1.5px solid var(--gold);
+  border-radius: 999px;
   font-family: var(--font-sub);
-  font-size: 16px;
+  font-size: 12.5px;
   letter-spacing: .05em;
   text-transform: uppercase;
   color: var(--white);
-  position: relative;
-  padding: 14px 4px;
-  width: 100%;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  white-space: nowrap;
 }
-.nav-cta{
-  margin-top: 18px !important;
-  padding: 13px 24px !important;
-  border: 1.5px solid var(--gold);
-  border-radius: 999px;
-  text-align:center;
-  border-bottom: 1.5px solid var(--gold) !important;
-  width: auto !important;
-}
-
-.burger{
-  display:flex; flex-direction:column; justify-content:center; gap:5px;
-  cursor:pointer; background:none; border:none; z-index: 1002; position:relative;
-  width: 44px; height: 44px; padding:0; margin: -10px;
-  align-items:center;
-}
-.burger span{
-  width:24px; height:2px; background:var(--white); border-radius: 2px;
-  transition: transform .3s ease, opacity .3s ease;
-}
-.burger.active span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
-.burger.active span:nth-child(2){ opacity:0; }
-.burger.active span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
-
-.nav-backdrop{
-  position: fixed; inset:0; background: rgba(9,19,38,.5);
-  opacity:0; pointer-events:none; transition: opacity var(--transition);
-  z-index: 1000;
-}
-.nav-backdrop.open{ opacity:1; pointer-events:auto; }
 
 /* ---------- Hero ---------- */
 .hero{
@@ -573,7 +538,7 @@ footer{
 }
 
 /* ==========================================================================
-   BREAKPOINT: ≥ 980px  (desktop — restores side-by-side hero, nav bar, etc.)
+   BREAKPOINT: ≥ 980px  (desktop — full text navigation appears here)
    ========================================================================== */
 @media (min-width: 980px){
   :root{
@@ -583,15 +548,15 @@ footer{
   }
   .tl-dot img{ width:19px; height:19px; }
 
-  .burger{ display:none; }
-  .nav-backdrop{ display:none; }
-  nav.main-nav{
-    position: static; height:auto; width:auto; background:transparent;
-    flex-direction:row; align-items:center; padding:0; gap:40px;
-    transform:none; box-shadow:none; overflow:visible;
-  }
+  nav.main-nav{ display:flex; }
   nav.main-nav a{
-    font-size:14px; padding:4px 0; width:auto; border-bottom:none;
+    font-family: var(--font-sub);
+    font-size:14px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--white);
+    position: relative;
+    padding:4px 0;
   }
   nav.main-nav a::after{
     content:''; position:absolute; left:0; bottom:-2px; width:0; height:1.5px;
@@ -601,7 +566,7 @@ footer{
     nav.main-nav a:hover::after{ width:100%; }
   }
   .nav-cta{
-    margin-top:0 !important; padding:10px 24px !important; border-bottom:1.5px solid var(--gold) !important;
+    padding:10px 24px; border-bottom:1.5px solid var(--gold); font-size:14px;
   }
   .brand img{ height:34px; }
   header.scrolled .brand img{ height:30px; }

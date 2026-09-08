@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const header = document.querySelector('header');
   const burger = document.querySelector('.burger');
   const nav = document.querySelector('.main-nav');
+  const backdrop = document.querySelector('.nav-backdrop');
 
   // Header solid on scroll
   const onScroll = () => {
@@ -17,16 +18,37 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', onScroll, { passive: true });
 
   // Mobile nav toggle
+  const closeNav = () => {
+    nav.classList.remove('open');
+    burger.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  const openNav = () => {
+    nav.classList.add('open');
+    burger.classList.add('active');
+    if (backdrop) backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
   if (burger) {
     burger.addEventListener('click', () => {
-      nav.classList.toggle('open');
-      burger.classList.toggle('active');
+      if (nav.classList.contains('open')) {
+        closeNav();
+      } else {
+        openNav();
+      }
     });
   }
+  if (backdrop) {
+    backdrop.addEventListener('click', closeNav);
+  }
   document.querySelectorAll('.main-nav a').forEach(link => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-    });
+    link.addEventListener('click', closeNav);
+  });
+  // Close mobile nav on resize up to desktop breakpoint
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 980) closeNav();
   });
 
   // Scroll reveal
@@ -38,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         io.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
 
   // Smooth anchor scrolling offset for fixed header
@@ -49,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = document.querySelector(targetId);
         if (target) {
           e.preventDefault();
-          const offset = 90;
+          const offset = window.innerWidth >= 980 ? 90 : 70;
           const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
           window.scrollTo({ top, behavior: 'smooth' });
         }

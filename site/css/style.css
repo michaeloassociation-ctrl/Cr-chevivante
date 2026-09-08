@@ -517,7 +517,7 @@ footer{
   text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px;
 }
 .footer-col a, .footer-col p{ display:block; font-size:13.5px; color: rgba(255,255,255,.65); margin-bottom:10px; }
-.footer-col a{ padding: 4px 0; } /* larger tap target on mobile */
+.footer-col a{ padding: 4px 0; }
 .footer-col a:hover{ color: var(--gold); }
 .footer-bottom{
   display:flex; flex-direction: column; gap:8px;

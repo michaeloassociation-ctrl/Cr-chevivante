@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.main-nav a').forEach(link => {
     link.addEventListener('click', closeNav);
   });
-  // Close mobile nav on resize up to desktop breakpoint
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 980) closeNav();
   });

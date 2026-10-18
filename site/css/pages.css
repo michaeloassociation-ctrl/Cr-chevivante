@@ -1,0 +1,186 @@
+/* ==========================================================================
+   Michaëlo — complément à style.css
+   Sous-pages (association, spectacle, nous rejoindre, contact, mentions
+   légales) + menu mobile + ligne légale du pied de page.
+   À charger après style.css.
+   ========================================================================== */
+
+/* ---------- En-tête : actions + menu mobile ---------- */
+.header-actions{ display:flex; align-items:center; gap:8px; }
+.nav-toggle{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:42px; height:42px; padding:0; flex-shrink:0;
+  background:transparent; color:var(--white);
+  border:1.5px solid rgba(255,255,255,.35); border-radius:50%;
+  cursor:pointer; touch-action:manipulation;
+}
+.nav-toggle span{ display:block; width:16px; height:1.5px; background:currentColor; position:relative; transition: background .2s ease; }
+.nav-toggle span::before, .nav-toggle span::after{
+  content:''; position:absolute; left:0; width:16px; height:1.5px; background:var(--white);
+  transition: transform .3s ease, top .3s ease;
+}
+.nav-toggle span::before{ top:-5px; }
+.nav-toggle span::after{ top:5px; }
+header.nav-open .nav-toggle span{ background:transparent; }
+header.nav-open .nav-toggle span::before{ top:0; transform:rotate(45deg); }
+header.nav-open .nav-toggle span::after{ top:0; transform:rotate(-45deg); }
+
+@media (max-width: 979.98px){
+  header.nav-open{ background: var(--navy); backdrop-filter:none; box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+  header.nav-open nav.main-nav{
+    display:flex; flex-direction:column; align-items:stretch; gap:0;
+    position:absolute; top:100%; left:0; right:0;
+    background: var(--navy);
+    padding: 4px var(--pad-container) 16px;
+    box-shadow: 0 18px 30px rgba(0,0,0,.25);
+  }
+  nav.main-nav a{
+    font-family: var(--font-sub);
+    font-size:14px; letter-spacing:.08em; text-transform:uppercase;
+    color: var(--white);
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  nav.main-nav a:last-child{ border-bottom:none; }
+}
+@media (max-width: 359px){
+  .nav-cta{ padding: 10px 14px; font-size: 11.5px; }
+}
+@media (min-width: 980px){
+  .nav-toggle{ display:none; }
+  nav.main-nav{ gap: 30px; }
+}
+@media (min-width: 1180px){
+  nav.main-nav{ gap: 40px; }
+}
+nav.main-nav a[aria-current="page"]{ color: var(--gold); }
+
+/* ---------- Bandeau de titre des sous-pages ---------- */
+.page-hero{
+  background: var(--navy);
+  color: var(--white);
+  padding: clamp(116px, 17vw, 176px) 0 clamp(44px, 7vw, 80px);
+  overflow:hidden;
+}
+.page-hero .container{ position:relative; z-index:1; }
+.page-hero .crumb{ font-size:12.5px; color: rgba(255,255,255,.55); margin: 0 0 20px; }
+.page-hero .crumb a{ text-decoration: underline; text-underline-offset: 3px; }
+.page-hero .crumb a:hover{ color: var(--gold); }
+.page-hero h1{
+  color: var(--white);
+  font-size: clamp(34px, 7vw, 62px);
+  line-height: 1.06;
+  margin-top: 12px;
+  max-width: 18ch;
+}
+.page-hero h1 em{ font-style: normal; color: var(--gold); }
+.page-hero p.lead{
+  margin: 18px 0 0; max-width: 62ch;
+  color: rgba(255,255,255,.8); font-size: 16px;
+}
+.page-hero .key-facts{
+  display:flex; flex-direction:column; gap:10px;
+  margin: 26px 0 0; padding:0; list-style:none;
+  color: rgba(255,255,255,.78); font-size: 14.5px;
+}
+.page-hero .key-facts li{ display:flex; align-items:center; gap:10px; }
+.page-hero .key-facts img{ width:16px; height:16px; flex-shrink:0; }
+@media (min-width: 640px){
+  .page-hero .key-facts{ flex-direction:row; flex-wrap:wrap; column-gap:26px; }
+}
+
+/* ---------- Sections de contenu ---------- */
+.page-section{ padding: clamp(48px, 8vw, 92px) 0; background: var(--cream); }
+.page-section.alt{ background: var(--white); }
+.page-section + .page-section:not(.alt){ border-top: 1px solid #eadfca; }
+
+.prose{ max-width: 760px; }
+.prose h2{ font-size: clamp(26px, 4.6vw, 40px); line-height:1.12; margin: 10px 0 18px; color: var(--navy); }
+.prose h3{ font-family: var(--font-sub); font-size: 18px; color: var(--navy); margin: 30px 0 8px; letter-spacing:.01em; }
+.prose p, .prose li{ color:#3a4459; font-size: 15.5px; }
+.prose p{ margin: 0 0 16px; }
+.prose p.eyebrow{ color: var(--ember); font-size: 12px; margin: 0; }
+.prose ul{ margin: 0 0 16px; padding-left: 20px; }
+.prose li{ margin-bottom: 6px; }
+.prose li::marker{ color: var(--ember); }
+.prose a{ color: var(--ember-deep); text-decoration: underline; text-underline-offset: 3px; }
+.prose a:hover{ color: var(--ember); }
+.prose .note{
+  background: var(--white); border: 1px solid #eadfca; border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px; font-size: 14.5px; margin: 20px 0;
+}
+.page-section.alt .prose .note{ background: var(--cream); }
+.prose .btn{ text-decoration:none; color: var(--navy); margin-top: 8px; white-space: normal; text-align:center; }
+
+.two-col{ display:grid; grid-template-columns: 1fr; gap: 36px; align-items:start; }
+@media (min-width: 980px){
+  .two-col{ grid-template-columns: 1.15fr .85fr; gap: 64px; }
+}
+
+/* Fiche d'identité / coordonnées */
+.id-card{
+  background: var(--white);
+  border: 1px solid #eadfca;
+  border-radius: var(--radius);
+  padding: 26px 24px;
+  box-shadow: 0 20px 44px rgba(14,29,60,.07);
+}
+.page-section.alt .id-card{ background: var(--cream); box-shadow:none; }
+.id-card h2, .id-card h3{ font-family: var(--font-sub); font-size: 17px; color: var(--navy); margin-bottom: 8px; letter-spacing:.01em; }
+.id-list{ margin:0; }
+.id-list > div{ padding: 12px 0; border-bottom: 1px dashed #e6dcc8; }
+.id-list > div:last-child{ border-bottom:none; padding-bottom:0; }
+.id-list dt{
+  font-family: var(--font-sub); font-size: 11.5px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ember);
+  margin-bottom: 2px;
+}
+.id-list dd{ margin:0; font-size: 14.5px; color: var(--navy); overflow-wrap:anywhere; }
+.id-list dd a{ text-decoration: underline; text-underline-offset: 3px; }
+.id-list dd a:hover{ color: var(--ember); }
+
+/* Grille d'actions (réutilise .pillar de style.css) */
+.pillars.wide{ margin-top: 30px; }
+@media (min-width: 980px){
+  .pillars.wide{ grid-template-columns: repeat(4, 1fr); gap: 18px; }
+}
+.page-section.alt .pillar{ background: var(--cream); }
+
+/* Liste des pôles */
+.tags{ display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 16px; padding:0; list-style:none; }
+.tags li{
+  margin:0; font-size: 13px; color: var(--navy);
+  background: var(--white); border: 1px solid #eadfca; border-radius: 999px;
+  padding: 6px 14px;
+}
+.page-section.alt .tags li{ background: var(--cream); }
+
+/* FAQ des sous-pages */
+.faq-list{ max-width: 820px; margin: 0 auto; }
+.faq-list h3{ font-family: var(--font-sub); font-size: 17px; color: var(--navy); margin: 26px 0 6px; }
+.faq-list p{ margin:0; color:#3a4459; font-size: 15px; }
+.faq-list p.eyebrow{ color: var(--ember); font-size: 12px; }
+
+/* Bloc d'appel en bas de page */
+.page-cta{ background: var(--navy); color: var(--white); padding: clamp(44px, 7vw, 76px) 0; text-align:center; overflow:hidden; }
+.page-cta .container{ position:relative; z-index:1; }
+.page-cta h2{ color: var(--white); font-size: clamp(24px, 4.4vw, 38px); line-height:1.12; }
+.page-cta p{ color: rgba(255,255,255,.75); max-width: 56ch; margin: 14px auto 26px; font-size: 15px; }
+.page-cta .actions{ display:flex; flex-direction:column; gap:12px; align-items:center; }
+@media (min-width: 480px){
+  .page-cta .actions{ flex-direction:row; justify-content:center; flex-wrap:wrap; }
+}
+
+/* Lien « en savoir plus » de la page d'accueil */
+.more-link{
+  display:inline-flex; align-items:center; gap:6px; margin-top: 22px;
+  font-family: var(--font-sub); font-size: 13px; letter-spacing:.04em; text-transform:uppercase;
+  color: var(--ember-deep);
+}
+.more-link:hover{ color: var(--ember); }
+
+/* ---------- Pied de page : identifiants légaux ---------- */
+.footer-bottom a{ text-decoration: underline; text-underline-offset: 3px; }
+.footer-bottom a:hover{ color: var(--gold); }
+.footer-legal{ display:block; }

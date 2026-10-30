@@ -184,3 +184,75 @@ nav.main-nav a[aria-current="page"]{ color: var(--gold); }
 .footer-bottom a{ text-decoration: underline; text-underline-offset: 3px; }
 .footer-bottom a:hover{ color: var(--gold); }
 .footer-legal{ display:block; }
+
+/* ==========================================================================
+   Mise à jour 30/10/2026 : logo, don en ligne, soutien de la Ville
+   ========================================================================== */
+
+/* ---------- Logo (fichier recadré : la taille affichée = la taille réelle) ---------- */
+.brand img{ height: 38px; width: auto; }
+header.scrolled .brand img{ height: 34px; }
+@media (max-width: 379px){
+  .brand img, header.scrolled .brand img{ height: 31px; }
+  .header-actions{ gap: 6px; }
+  .nav-cta{ padding: 10px 14px; font-size: 11.5px; }
+  .nav-toggle{ width: 40px; height: 40px; }
+}
+@media (min-width: 980px){
+  .brand img{ height: 44px; }
+  header.scrolled .brand img{ height: 38px; }
+}
+.hero-logo{ width: min(210px, 58%); height: auto; }
+@media (min-width: 768px){ .hero-logo{ width: min(240px, 50%); } }
+@media (min-width: 980px){ .hero-logo{ width: min(270px, 55%); } }
+.footer-brand img{ height: 40px; width: auto; }
+.footer-soutien{ font-size: 12.5px !important; color: var(--gold) !important; letter-spacing: .02em; }
+
+/* Bouton d'en-tête « Faire un don » mis en avant */
+.nav-cta{ background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.nav-cta[aria-current="page"]{ box-shadow: 0 0 0 3px rgba(255,189,89,.35); }
+@media (hover:hover){ .nav-cta:hover{ background: #ffd085; } }
+@media (min-width: 980px) and (max-width: 1179.98px){
+  nav.main-nav{ gap: 24px; }
+  nav.main-nav a{ font-size: 13px; }
+}
+
+/* ---------- Bandeau « avec le soutien de » ---------- */
+.soutien{ background: var(--white); border-top: 1px solid #eadfca; border-bottom: 1px solid #eadfca; padding: 34px 0; }
+.soutien.alt{ background: var(--cream); }
+.soutien-logos{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap: 14px; text-align:center;
+}
+.soutien-michaelo{ height: 52px; width:auto; }
+.soutien-avec{
+  font-family: var(--font-sub); font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: #6a7488;
+}
+.soutien-ville{ font-family: var(--font-title); font-size: 26px; color: var(--navy); line-height:1.1; }
+.soutien-ville-img{ height: 46px; width:auto; }
+@media (min-width: 640px){ .soutien-ville-img{ height: 52px; } }
+@media (min-width: 640px){
+  .soutien-logos{ flex-direction:row; gap: 28px; }
+  .soutien-michaelo{ height: 58px; }
+}
+
+/* ---------- Page « Faire un don » ---------- */
+.don-grid{ display:grid; grid-template-columns: 1fr; gap: 28px; align-items:start; }
+@media (min-width: 980px){
+  .don-grid{ grid-template-columns: 1.1fr .9fr; gap: 56px; }
+}
+.don-form{
+  background: var(--white);
+  border: 1px solid #eadfca;
+  border-radius: var(--radius);
+  padding: 18px 10px;
+  box-shadow: 0 20px 44px rgba(14,29,60,.07);
+}
+@media (min-width: 480px){ .don-form{ padding: 26px 20px; } }
+.don-form iframe{ min-height: 560px; }
+.don-fallback{ text-align:center; font-size: 13px; color:#5a6579; margin: 14px 0 0; }
+.don-fallback a{ color: var(--ember-deep); text-decoration: underline; text-underline-offset: 3px; }
+.don-info .don-intro{ font-size: 14.5px; color:#3a4459; margin: 0 0 6px; }
+.don-info strong{ color: var(--ember-deep); }
+@media (min-width: 980px){ .don-info{ position: sticky; top: 110px; } }

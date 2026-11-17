@@ -256,3 +256,33 @@ header.scrolled .brand img{ height: 34px; }
 .don-info .don-intro{ font-size: 14.5px; color:#3a4459; margin: 0 0 6px; }
 .don-info strong{ color: var(--ember-deep); }
 @media (min-width: 980px){ .don-info{ position: sticky; top: 110px; } }
+
+/* ---------- Barre de progression de la collecte (HelloAsso) — 17/11/2026 ----------
+   Le widget HelloAsso (iframe) a deux mises en page :
+   - iframe > 600 px : pilule à 40 px des bords, 70 px de haut, bord blanc de 10 px ;
+   - iframe <= 600 px : pilule à 8 px des bords, 52 px de haut, bord blanc de 4 px.
+   Le contour bleu est dessiné par-dessus, calé sur cette pilule (container queries
+   sur la largeur réelle du bloc, pas sur celle de l'écran). */
+.don-progress{ container-type: inline-size; background: var(--white); border: 1px solid #eadfca; border-radius: var(--radius); padding: 16px 18px 14px; margin: 0 0 28px; }
+.don-progress-titre{ font-family: var(--font-sub); color: var(--navy); font-size: 15px; letter-spacing: .02em; margin: 0 0 10px; }
+@media (min-width: 980px){ .don-progress{ margin-bottom: 40px; } }
+
+.don-progress-cadre{ position: relative; overflow: hidden; height: 70px; }
+.don-progress-cadre iframe{ display: block; width: 100%; height: 70px; border: 0; overflow: hidden; }
+.don-progress-cadre::after{
+  content: ""; position: absolute; pointer-events: none;
+  left: 44px; right: 44px; top: 4px; height: 62px;
+  border: 2px solid var(--navy); border-radius: 999px;
+}
+/* Largeur moyenne : mise en page « mobile » du widget */
+@container (max-width: 600px){
+  .don-progress-cadre{ height: 52px; }
+  .don-progress-cadre iframe{ height: 52px; }
+  .don-progress-cadre::after{ left: 10px; right: 10px; top: 2px; height: 48px; }
+}
+/* Téléphone : widget réduit aux 2/3 pour que le montant tienne dans la pastille orange */
+@container (max-width: 400px){
+  .don-progress-cadre{ height: 34px; }
+  .don-progress-cadre iframe{ width: 150%; height: 52px; transform: scale(.6667); transform-origin: 0 0; }
+  .don-progress-cadre::after{ left: 6.5px; right: 6.5px; top: 1.5px; height: 32px; }
+}

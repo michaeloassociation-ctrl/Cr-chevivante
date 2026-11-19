@@ -286,3 +286,22 @@ header.scrolled .brand img{ height: 34px; }
   .don-progress-cadre iframe{ width: 150%; height: 52px; transform: scale(.6667); transform-origin: 0 0; }
   .don-progress-cadre::after{ left: 6.5px; right: 6.5px; top: 1.5px; height: 32px; }
 }
+
+/* ---------- Page don : où va l'argent (19/11/2026) ---------- */
+.don-usage{ margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e6dcc8; }
+.don-usage-titre{ font-family: var(--font-sub); color: var(--navy); font-size: 15px; letter-spacing: .02em; margin: 0 0 2px; }
+.don-usage-intro{ font-size: 13.5px; color:#5a6579; margin: 0 0 12px; }
+.don-usage-barre{ display:flex; gap: 3px; height: 14px; border-radius: 999px; overflow:hidden; margin-bottom: 16px; }
+.don-usage-barre span{ flex-basis: 0; min-width: 4px; }
+.u-tech{ background: var(--navy); }
+.u-orga{ background: var(--clay); }
+.u-da{ background: var(--bordeaux); }
+.u-marche{ background: var(--gold); }
+.don-usage-liste{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns: 1fr; gap: 10px 32px; }
+@media (min-width: 720px){ .don-usage-liste{ grid-template-columns: 1fr 1fr; } }
+.don-usage-liste li{ display:flex; align-items:flex-start; gap: 10px; font-size: 14px; color: var(--navy); }
+.don-usage-liste .pastille{ width: 12px; height: 12px; border-radius: 50%; flex-shrink:0; margin-top: 5px; }
+.don-usage-liste .u-txt{ flex: 1; min-width: 0; }
+.don-usage-liste strong{ display:block; font-weight: 600; }
+.don-usage-liste small{ display:block; font-size: 12.5px; color:#5a6579; }
+.don-usage-liste .u-mt{ text-align:right; font-weight: 600; white-space: nowrap; }

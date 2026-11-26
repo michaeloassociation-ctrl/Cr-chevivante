@@ -2,15 +2,144 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0e1d3c">
 <title>Espace organisateurs · Michaëlo</title>
-<meta http-equiv="refresh" content="0; url=espace-organisateurs%20(1).html">
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0e1d3c;color:#c3c9d6;font:15px/1.5 Poppins,system-ui,sans-serif;text-align:center;padding:24px}a{color:#ffbd59}</style>
-<script>location.replace('espace-organisateurs%20(1).html'+location.hash);</script>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chau+Philomene+One&family=Cormorant+Garamond:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--nuit:#0e1d3c;--nuit2:#18294d;--or:#ffbd59;--or2:#ffcd80;--encre2:#c3c9d6;--filet:rgba(255,255,255,.22);--alerte:#ff6b5b}
+*{box-sizing:border-box;margin:0}
+html,body{min-height:100%}
+body{background:radial-gradient(1200px 600px at 50% -10%,#1b3263 0%,var(--nuit) 60%) fixed;color:#fff;font:400 16px/1.5 Poppins,system-ui,sans-serif;display:grid;place-items:center;padding:24px 16px;min-height:100vh}
+.login{width:100%;max-width:400px;display:flex;flex-direction:column;gap:24px}
+.brand{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.brand img{height:46px;width:auto}
+h1{font:400 34px/1.15 "The Seasons","Cormorant Garamond",Georgia,serif;color:var(--or);letter-spacing:.04em;text-transform:uppercase}
+.brand p{color:var(--encre2);font-size:14px}
+form{background:var(--nuit2);border:1px solid var(--filet);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:16px;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+label{display:flex;flex-direction:column;gap:6px;font:400 14px/1 "Chau Philomene One","Arial Narrow",sans-serif;letter-spacing:.04em;color:var(--or)}
+input[type=text],input[type=password]{font:400 16px Poppins,sans-serif;color:#fff;background:var(--nuit);border:1px solid var(--filet);border-radius:8px;padding:12px 14px;min-height:48px;width:100%}
+input:focus{outline:none;border-color:var(--or)}
+.pw{position:relative}
+.pw button{position:absolute;right:6px;top:6px;height:36px;padding:0 10px;border:0;border-radius:6px;background:transparent;color:var(--encre2);font:500 12px Poppins,sans-serif;cursor:pointer}
+.rem{flex-direction:row;align-items:center;gap:10px;font:400 14px Poppins,sans-serif;color:var(--encre2);letter-spacing:0}
+.rem input{width:20px;height:20px;accent-color:var(--or)}
+.go{min-height:52px;border:0;border-radius:8px;background:var(--or);color:var(--nuit);font:600 16px Poppins,sans-serif;cursor:pointer}
+.go:hover{background:var(--or2)}
+.go:disabled{opacity:.6;cursor:wait}
+#err{color:var(--alerte);font-size:14px;min-height:20px;text-align:center}
+.foot{color:var(--encre2);font-size:12.5px;text-align:center}
+:focus-visible{outline:2px solid var(--or);outline-offset:2px}
+</style>
 </head>
 <body>
-<p>Ouverture de l'espace organisateurs…<br><a href="espace-organisateurs%20(1).html">Continuer</a></p>
+<main class="login">
+  <div class="brand"><img src="/assets/logo-michaelo-white.png" alt="Michaëlo"><h1>Espace organisateurs</h1><p>Un Noël à Versailles · logiciel du jour J<br>Réservé au bureau et aux chefs de pôle.</p></div>
+  <form id="f" autocomplete="on">
+    <label for="u">Identifiant<input id="u" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+    <label for="p">Mot de passe<span class="pw"><input id="p" name="password" type="password" autocomplete="current-password" required><button type="button" id="eye" aria-label="Afficher le mot de passe">Afficher</button></span></label>
+    <label class="rem"><input type="checkbox" id="r" checked> Rester connecté sur cet appareil</label>
+    <button class="go" id="go" type="submit">Se connecter →</button>
+    <p id="err" role="alert"></p>
+  </form>
+  <p class="foot">Accès perdu ? Demandez-le au président de l'association.<br>Ne transmettez pas ces accès aux bénévoles.</p>
+</main>
+<script>
+(function(){
+'use strict';
+if(location.protocol==='http:'&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){location.replace('https://'+location.host+location.pathname+location.search+location.hash);return}
+// Contenu chiffré du logiciel (fichier déposé séparément) et adresses du serveur de synchronisation
+const PAYLOAD_URL='/espace-organisateurs%20(1).html';
+const SYNC_URL='/.netlify/functions/orga-sync';
+const PATCH_URL='/orga/patch.js';
+const ITER_API=1200000;
+const enc=new TextEncoder(),dec=new TextDecoder();
+const $=id=>document.getElementById(id);
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const tob64=u=>{let s='';for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)};
+const hex=u=>Array.from(u,x=>x.toString(16).padStart(2,'0')).join('');
+const norm=v=>String(v||'').normalize('NFKC').replace(/[-_.‐-―−﹘﹣－\s ​-‍﻿]+/g,'').toLowerCase();
+let P=null;
+async function payload(){
+  if(P)return P;
+  const r=await fetch(PAYLOAD_URL,{cache:'no-cache'});if(!r.ok)throw new Error('contenu introuvable ('+r.status+')');
+  const t=await r.text();const m=t.match(/<script id="mj-payload" type="application\/json">([\s\S]*?)<\/script>/);
+  if(!m)throw new Error('contenu illisible');P=JSON.parse(m[1]);return P;
+}
+const KEY=()=>'mj2-cle-'+P.salt.slice(0,8),TOK=()=>'mj2-jeton-'+P.salt.slice(0,8);
+async function baseKey(id,pw){return crypto.subtle.importKey('raw',enc.encode(norm(id)+'\n'+norm(pw)),'PBKDF2',false,['deriveKey','deriveBits'])}
+async function openWith(key){return dec.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(P.iv)},key,b64(P.ct)))}
+/* ---- synchronisation partagée (Netlify) ---- */
+function syncDB(token){
+  const state={},listeners={};let ver=0,loaded=false,timer=0,fails=0;
+  const rows=c=>Object.keys(state[c]||{}).map(id=>({id,data:state[c][id]}));
+  const emit=c=>(listeners[c]||[]).forEach(cb=>{try{cb(rows(c))}catch(e){console.error(e)}});
+  const setStatus=s=>{window.MJ_SYNC=s;const d=document.getElementById('syncDot');if(d)d.className='sync '+(s==='ok'?'on':'')};
+  async function poll(){
+    clearTimeout(timer);
+    try{
+      const r=await fetch(SYNC_URL+'?since='+ver,{headers:{authorization:'Bearer '+token},cache:'no-store'});
+      if(r.status===401){setStatus('refus');try{localStorage.removeItem(TOK())}catch(e){}return}
+      if(!r.ok)throw new Error(r.status);
+      const j=await r.json();const touched=new Set();
+      (j.changes||[]).forEach(x=>{(state[x.coll]=state[x.coll]||{})[x.id]=x.data;touched.add(x.coll)});
+      ver=j.ver||ver;fails=0;setStatus('ok');
+      if(!loaded){loaded=true;Object.keys(listeners).forEach(emit)}else touched.forEach(emit);
+    }catch(e){fails++;setStatus('hors-ligne')}
+    timer=setTimeout(poll,document.hidden?30000:Math.min(5000*(1+fails),30000));
+  }
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
+  const queue=[];let sending=false;
+  async function flush(){
+    if(sending||!queue.length)return;sending=true;
+    const batch=queue.splice(0,queue.length);
+    try{const r=await fetch(SYNC_URL,{method:'POST',headers:{authorization:'Bearer '+token,'content-type':'application/json'},body:JSON.stringify(batch)});if(!r.ok)throw new Error(r.status);setStatus('ok')}
+    catch(e){queue.unshift(...batch.filter(b=>!queue.some(q=>q.coll===b.coll&&q.id===b.id)));setStatus('hors-ligne');setTimeout(flush,4000)}
+    sending=false;if(queue.length)flush();else setTimeout(poll,300);
+  }
+  poll();
+  return{
+    collection(c){return{onSnapshot(cb){(listeners[c]=listeners[c]||[]).push(cb);if(loaded)cb(rows(c))}}},
+    doc(path){const i=path.indexOf('/');const coll=path.slice(0,i),id=path.slice(i+1);
+      return{set(data){(state[coll]=state[coll]||{})[id]=data;const k=queue.findIndex(q=>q.coll===coll&&q.id===id);if(k>=0)queue[k].data=data;else queue.push({coll,id,data});setTimeout(flush,150);return Promise.resolve()}}}
+  };
+}
+function launch(html,token){
+  window.MJ_LOGOUT=()=>{try{localStorage.removeItem(KEY());localStorage.removeItem(TOK())}catch(e){}location.href=location.pathname};
+  window.MJ_SYNC='connexion';
+  if(token)window.MJ_DB=Promise.resolve(syncDB(token));
+  document.open();document.write(html);document.close();
+  const s=document.createElement('script');s.src=PATCH_URL+'?v='+Date.now();(document.body||document.documentElement).appendChild(s);
+}
+$('eye').addEventListener('click',()=>{const p=$('p');const s=p.type==='password';p.type=s?'text':'password';$('eye').textContent=s?'Masquer':'Afficher'});
+$('f').addEventListener('submit',async e=>{
+  e.preventDefault();$('err').textContent='';
+  if(!window.crypto||!crypto.subtle){$('err').textContent='Ce navigateur ne permet pas la connexion sécurisée. Utilisez Chrome, Edge, Firefox ou Safari à jour, à l\'adresse https://www.asso-michaelo.com.';return}
+  $('go').disabled=true;$('go').textContent='Vérification…';
+  try{
+    await payload();
+    const base=await baseKey($('u').value,$('p').value);
+    const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(P.salt),iterations:P.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['decrypt']);
+    let html;try{html=await openWith(key)}catch(x){throw new Error('bad')}
+    $('go').textContent='Connexion au partage…';
+    const tok=hex(new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode('michaelo-orga-api-v1'),iterations:ITER_API,hash:'SHA-256'},base,256)));
+    if($('r').checked){try{localStorage.setItem(KEY(),tob64(new Uint8Array(await crypto.subtle.exportKey('raw',key))));localStorage.setItem(TOK(),tok)}catch(x){}}
+    launch(html,tok);
+  }catch(x){$('err').textContent=x.message==='bad'?'Identifiant ou mot de passe incorrect. Vérifiez l\'orthographe (les majuscules, espaces et tirets ne comptent pas).':'Connexion impossible : '+(x.message||x)+'. Rechargez la page ou essayez un autre navigateur.';$('go').disabled=false;$('go').textContent='Se connecter →'}
+});
+window.addEventListener('load',async()=>{
+  if(!window.crypto||!crypto.subtle)return;
+  try{await payload()}catch(e){return}
+  let raw=null,tok=null;try{raw=localStorage.getItem(KEY());tok=localStorage.getItem(TOK())}catch(e){}
+  if(!raw)return;
+  try{const key=await crypto.subtle.importKey('raw',b64(raw),{name:'AES-GCM'},false,['decrypt']);launch(await openWith(key),tok)}
+  catch(e){try{localStorage.removeItem(KEY());localStorage.removeItem(TOK())}catch(x){}}
+});
+})();
+</script>
 </body>
 </html>

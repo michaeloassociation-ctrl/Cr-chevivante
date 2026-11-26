@@ -1,0 +1,8 @@
+{
+  "name": "michaelo-site",
+  "private": true,
+  "description": "Site de l association Michaelo et espace organisateurs",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

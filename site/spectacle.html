@@ -9,6 +9,10 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>document.documentElement.className+=" js"</script>
+<link rel="preload" href="fonts/maharlika.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/chau-philomene-one.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/pages.css">
 </head>
@@ -17,7 +21,7 @@
 <header>
   <div class="container">
     <a href="./" class="brand" aria-label="Michaëlo — accueil">
-      <img src="assets/logo-michaelo-white.png" alt="Michaëlo" width="1200" height="314">
+      <img src="assets/logo-michaelo-white.png" alt="Michaëlo" width="600" height="157">
     </a>
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
       <a href="association.html">L'association</a>
@@ -119,7 +123,22 @@
             <img src="assets/icon-ange-navy.png" alt="">
             <div><strong>Entrée</strong><span>Libre, gratuite, ouverte à tous les publics</span></div>
           </div>
+          <div>
+            <img src="assets/icon-etoile-navy.png" alt="">
+            <div><strong>Accessibilité</strong><span>Lieu accessible aux personnes à mobilité réduite et aux poussettes</span></div>
+          </div>
+          <div>
+            <img src="assets/icon-lanterne-flamme-navy.png" alt="">
+            <div><strong>Stationnement</strong><span>Dans les rues adjacentes ou au parking de la cathédrale</span></div>
+          </div>
+          <div>
+            <img src="assets/icon-lanterne-simple-navy.png" alt="">
+            <div><strong>Paiement sur place</strong><span>Carte bancaire et espèces acceptées</span></div>
+          </div>
         </div>
+        <a class="agenda-btn" href="un-noel-a-versailles.ics" download>
+          <img src="assets/icon-etoile-navy.png" alt="">Ajouter à mon agenda
+        </a>
         <div class="gares-block">
           <p class="gares-label">
             <img src="assets/icon-etoile-navy.png" alt="">
@@ -142,7 +161,12 @@
         </div>
       </div>
       <div class="map-frame reveal">
-        <iframe src="https://maps.google.com/maps?q=Cath%C3%A9drale%20Saint-Louis%20de%20Versailles&t=&z=16&ie=UTF8&iwloc=&output=embed" loading="lazy" allowfullscreen title="Carte — Cathédrale Saint-Louis de Versailles"></iframe>
+        <div class="map-consent" data-map-src="https://maps.google.com/maps?q=Cath%C3%A9drale%20Saint-Louis%20de%20Versailles&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=&amp;output=embed">
+          <p class="map-consent-titre">Place Saint-Louis<br>78000 Versailles</p>
+          <p class="map-consent-texte">La carte est fournie par Google Maps. En l'affichant, vous acceptez que Google reçoive votre adresse IP et dépose des cookies.</p>
+          <button type="button" class="btn btn-gold map-load">Afficher la carte</button>
+          <a class="map-ext" href="https://www.google.com/maps/search/?api=1&amp;query=Cath%C3%A9drale%20Saint-Louis%20de%20Versailles" target="_blank" rel="noopener noreferrer">Ouvrir dans Google Maps →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -163,8 +187,14 @@
       <p>Oui. « Un Noël à Versailles » est une sortie familiale, ouverte à tous les âges.</p>
       <h3>Le spectacle a-t-il lieu en extérieur ?</h3>
       <p>Oui, toute la soirée se déroule en plein air sur le parvis. Pensez à vous couvrir.</p>
+      <h3>Où se garer ?</h3>
+      <p>Dans les rues adjacentes ou au parking de la cathédrale. La gare Versailles Château Rive Gauche est à 5 minutes à pied.</p>
+      <h3>Le lieu est-il accessible ?</h3>
+      <p>Oui, le parvis est accessible aux personnes à mobilité réduite et aux poussettes.</p>
+      <h3>Peut-on payer par carte ?</h3>
+      <p>Oui. La carte bancaire et les espèces sont acceptées sur place.</p>
       <h3>Qui organise l'événement ?</h3>
-      <p>L'association Michaëlo, association loi 1901 à but non lucratif. <a href="association.html" style="text-decoration:underline;text-underline-offset:3px">En savoir plus sur l'association</a>.</p>
+      <p>L'association Michaëlo, association loi 1901 à but non lucratif. <a href="association.html" class="lien-souligne">En savoir plus sur l'association</a>.</p>
     </div>
   </div>
 </section>
@@ -184,7 +214,7 @@
   <div class="container">
     <div class="footer-top">
       <div class="footer-brand">
-        <img src="assets/logo-michaelo-white.png" alt="Michaëlo" width="1200" height="314">
+        <img src="assets/logo-michaelo-white.png" alt="Michaëlo" width="600" height="157">
         <p>Association loi 1901 d'intérêt général, indépendante et portée par des bénévoles versaillais, pour faire revivre la Nativité au cœur de Versailles.</p>
         <p class="footer-soutien">Avec le soutien de la Ville de Versailles</p>
       </div>

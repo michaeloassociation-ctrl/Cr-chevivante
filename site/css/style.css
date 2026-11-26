@@ -5,8 +5,18 @@
    les media queries min-width ajoutent/adaptent pour tablette et desktop.
    ========================================================================== */
 
-@import url('https://fonts.cdnfonts.com/css/maharlika');
-@import url('https://fonts.googleapis.com/css2?family=Chau+Philomene+One&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&display=swap');
+/* Polices hébergées sur le site (aucun appel à Google ou à un CDN tiers) */
+@font-face{font-family:'Maharlika';src:url('../fonts/maharlika.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Chau Philomene One';src:url('../fonts/chau-philomene-one.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/poppins-300.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/poppins-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/poppins-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/poppins-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/poppins-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/poppins-400-italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('../fonts/cormorant-garamond-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('../fonts/cormorant-garamond-600.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('../fonts/cormorant-garamond-400-italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
 
 :root{
   --navy:#0e1d3c;
@@ -159,6 +169,8 @@ nav.main-nav{ display:none; align-items:center; gap: 40px; }
   height: min(72vh, 560px);
   flex-shrink: 0;
 }
+.hero-visual picture,
+.projet-photo .frame picture{ display:block; width:100%; height:100%; }
 .hero-visual img{
   width:100%; height:100%;
   object-fit: cover;
@@ -186,8 +198,6 @@ nav.main-nav{ display:none; align-items:center; gap: 40px; }
 }
 .hero-copy .deco-line img{ width:16px; height:16px; }
 .hero-copy .deco-line span.rule{ height:1px; width:40px; background: rgba(255,189,89,.5); }
-
-.hero-logo{ width: min(230px, 56%); margin-bottom: 22px; }
 
 .hero h1{
   color: var(--white);
@@ -361,6 +371,15 @@ nav.main-nav{ display:none; align-items:center; gap: 40px; }
 .lieu-facts strong{ display:block; font-family: var(--font-sub); font-size:13.5px; color:var(--navy); }
 .lieu-facts span{ font-size:13.5px; color:#5a6579; }
 
+.agenda-btn{
+  display:inline-flex; align-items:center; gap:10px; margin-top: 22px;
+  padding: 11px 20px; border: 1.5px solid var(--navy); border-radius: 999px;
+  font-family: var(--font-sub); font-size: 13px; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--navy); text-decoration:none; transition: background .2s, color .2s;
+}
+.agenda-btn img{ width:16px; height:16px; object-fit:contain; }
+@media (hover:hover){ .agenda-btn:hover{ background: var(--navy); color: var(--white); } .agenda-btn:hover img{ filter: brightness(0) invert(1); } }
+
 .gares-block{
   margin-top: 26px;
   background: var(--cream);
@@ -400,6 +419,19 @@ nav.main-nav{ display:none; align-items:center; gap: 40px; }
   min-height: 280px;
 }
 .map-frame iframe{ width:100%; height:100%; min-height:280px; border:0; filter: grayscale(.15) contrast(1.05); }
+
+/* Carte : chargée seulement à la demande (pas de cookie Google sans action du visiteur) */
+.map-consent{
+  min-height: 280px; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+  padding: 32px 24px; text-align:center;
+  background: radial-gradient(600px 300px at 50% 0%, #1b3263 0%, var(--navy) 70%);
+  color: var(--white);
+}
+.map-consent-titre{ font-family: var(--font-title); font-size: 26px; line-height:1.2; color: var(--gold); margin:0; }
+.map-consent-texte{ font-size: 13px; line-height:1.55; color: rgba(255,255,255,.75); max-width: 340px; margin:0; }
+.map-ext{ font-family: var(--font-sub); font-size: 13px; letter-spacing:.05em; text-transform:uppercase; color: var(--white); text-decoration: underline; text-underline-offset: 4px; }
+.map-ext:hover{ color: var(--gold); }
 
 /* ---------- Rejoindre l'aventure ---------- */
 .rejoindre{
@@ -490,10 +522,10 @@ footer{
 }
 
 /* ---------- Reveal animation ---------- */
-.reveal{ opacity:0; transform: translateY(22px); transition: opacity .8s ease, transform .8s ease; }
-.reveal.is-visible{ opacity:1; transform: translateY(0); }
+.js .reveal{ opacity:0; transform: translateY(22px); transition: opacity .8s ease, transform .8s ease; }
+.js .reveal.is-visible{ opacity:1; transform: translateY(0); }
 @media (prefers-reduced-motion: reduce){
-  .reveal{ opacity:1; transform:none; transition:none; }
+  .js .reveal{ opacity:1; transform:none; transition:none; }
   html{ scroll-behavior:auto; }
 }
 
@@ -530,7 +562,6 @@ footer{
    BREAKPOINT: ≥ 768px  (tablets)
    ========================================================================== */
 @media (min-width: 768px){
-  .hero-logo{ width: min(260px, 55%); }
   .section-head p.lead{ font-size: 16.5px; }
   .lieu-grid{ grid-template-columns: 1fr 1fr; gap: 44px; }
   .footer-top{ flex-direction: row; justify-content: space-between; align-items:flex-start; }
@@ -580,7 +611,6 @@ footer{
   }
   .hero-visual img{ object-position: center 25%; }
   .hero-copy{ flex:1 1 52%; order:1; padding: 160px 4vw 100px 6vw; }
-  .hero-logo{ width:min(300px,60%); margin-bottom:34px; }
   .hero .subtitle{ margin: 14px 0 30px; }
   .hero .meta{ margin-bottom:42px; }
   .scroll-cue{

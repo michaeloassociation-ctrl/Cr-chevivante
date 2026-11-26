@@ -8,9 +8,13 @@
 <title>Espace organisateurs · Michaëlo</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chau+Philomene+One&family=Cormorant+Garamond:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'Chau Philomene One';src:url('/fonts/chau-philomene-one.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('/fonts/cormorant-garamond-400.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('/fonts/cormorant-garamond-500.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Poppins';src:url('/fonts/poppins-400.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Poppins';src:url('/fonts/poppins-500.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Poppins';src:url('/fonts/poppins-600.woff2') format('woff2');font-weight:600;font-display:swap}
 :root{--nuit:#0e1d3c;--nuit2:#18294d;--or:#ffbd59;--or2:#ffcd80;--encre2:#c3c9d6;--filet:rgba(255,255,255,.22);--alerte:#ff6b5b}
 *{box-sizing:border-box;margin:0}
 html,body{min-height:100%}
@@ -53,7 +57,7 @@ input:focus{outline:none;border-color:var(--or)}
 'use strict';
 if(location.protocol==='http:'&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){location.replace('https://'+location.host+location.pathname+location.search+location.hash);return}
 // Contenu chiffré du logiciel (fichier déposé séparément) et adresses du serveur de synchronisation
-const PAYLOAD_URL='/espace-organisateurs%20(1).html';
+const PAYLOAD_URL='/orga/contenu.html';
 const SYNC_URL='/.netlify/functions/orga-sync';
 const PATCH_URL='/orga/patch.js';
 const ITER_API=1200000;

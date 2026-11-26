@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Association Michaelo//Un Noel a Versailles//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:un-noel-a-versailles-2026@asso-michaelo.com
+DTSTAMP:20261126T120000Z
+DTSTART:20261212T153000Z
+DTEND:20261212T220000Z
+SUMMARY:Un Noël à Versailles — Spectacle & Crèche vivante
+DESCRIPTION:Ouverture du parvis à 16h30\, représentation unique à 17h00 
+ (1 h)\, puis concerts\, stands de créateurs versaillais et buvette. Entr
+ ée libre et gratuite. https://www.asso-michaelo.com/
+LOCATION:Parvis de la Cathédrale Saint-Louis\, Place Saint-Louis\, 78000 V
+ ersailles
+URL:https://www.asso-michaelo.com/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Un Noël à Versailles demain
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

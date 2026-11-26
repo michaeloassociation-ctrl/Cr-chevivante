@@ -1,4 +1,14 @@
 // Correctifs du logiciel de l'espace organisateurs, chargés après l'ouverture (aucune donnée sensible ici)
+
+// Spectacle · Pilotage : nouvelle timeline des tops (fichier séparé)
+(function () {
+  if (document.getElementById('mj-sx')) return;
+  var s = document.createElement('script');
+  s.id = 'mj-sx';
+  s.src = '/orga/spectacle.js?v=' + Date.now();
+  (document.body || document.documentElement).appendChild(s);
+})();
+
 (function apply(n) {
   'use strict';
   if (typeof window.extraAct !== 'function' || typeof window.render !== 'function') { if ((n || 0) < 600) setTimeout(function () { apply((n || 0) + 1); }, 100); return; }

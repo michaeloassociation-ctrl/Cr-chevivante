@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /espace-organisateurs.html
+Disallow: /espace-organisateurs
 
 Sitemap: https://www.asso-michaelo.com/sitemap.xml

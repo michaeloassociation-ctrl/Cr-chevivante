@@ -16,11 +16,18 @@
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-cache"
 
-# Ancien nom du contenu chiffré de l'espace organisateurs
+# Anciennes adresses de l'espace organisateurs (favoris, écran d'accueil) : vers la page de connexion actuelle
 [[redirects]]
   from = "/espace-organisateurs%20(1).html"
-  to = "/orga/contenu.html"
+  to = "/espace-organisateurs.html"
   status = 301
+  force = true
+
+[[redirects]]
+  from = "/espace-organisateurs/*"
+  to = "/espace-organisateurs.html"
+  status = 301
+  force = true
 
 [[headers]]
   for = "/*.ics"

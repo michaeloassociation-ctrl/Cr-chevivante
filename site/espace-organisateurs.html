@@ -36,6 +36,8 @@ input:focus{outline:none;border-color:var(--or)}
 .go:hover{background:var(--or2)}
 .go:disabled{opacity:.6;cursor:wait}
 #err{color:var(--alerte);font-size:14px;min-height:20px;text-align:center}
+#err ul{text-align:left;margin:8px 0 0;padding-left:18px;color:var(--encre2);font-size:13px;display:flex;flex-direction:column;gap:4px}
+#err b{color:#fff}
 .foot{color:var(--encre2);font-size:12.5px;text-align:center}
 :focus-visible{outline:2px solid var(--or);outline-offset:2px}
 </style>
@@ -44,8 +46,8 @@ input:focus{outline:none;border-color:var(--or)}
 <main class="login">
   <div class="brand"><img src="/assets/logo-michaelo-white.png" alt="Michaëlo"><h1>Espace organisateurs</h1><p>Un Noël à Versailles · logiciel du jour J<br>Réservé au bureau et aux chefs de pôle.</p></div>
   <form id="f" autocomplete="on">
-    <label for="u">Identifiant<input id="u" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
-    <label for="p">Mot de passe<span class="pw"><input id="p" name="password" type="password" autocomplete="current-password" required><button type="button" id="eye" aria-label="Afficher le mot de passe">Afficher</button></span></label>
+    <label for="u">Identifiant<input id="u" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></label>
+    <label for="p">Mot de passe<span class="pw"><input id="p" name="password" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" required><button type="button" id="eye" aria-label="Afficher le mot de passe">Afficher</button></span></label>
     <label class="rem"><input type="checkbox" id="r" checked> Rester connecté sur cet appareil</label>
     <button class="go" id="go" type="submit">Se connecter →</button>
     <p id="err" role="alert"></p>
@@ -60,6 +62,8 @@ if(location.protocol==='http:'&&!/^(localhost|127\.0\.0\.1)$/.test(location.host
 const PAYLOAD_URL='/orga/contenu.html';
 const SYNC_URL='/.netlify/functions/orga-sync';
 const PATCH_URL='/orga/patch.js';
+// Ancienne version des accès (avant le 26 novembre au soir), utilisée seulement pour expliquer un refus
+const OLD_URL='/orga/ancien.json';
 const ITER_API=1200000;
 const enc=new TextEncoder(),dec=new TextDecoder();
 const $=id=>document.getElementById(id);
@@ -120,20 +124,76 @@ function launch(html,token){
   const s=document.createElement('script');s.src=PATCH_URL+'?v='+Date.now();(document.body||document.documentElement).appendChild(s);
 }
 $('eye').addEventListener('click',()=>{const p=$('p');const s=p.type==='password';p.type=s?'text':'password';$('eye').textContent=s?'Masquer':'Afficher'});
+/* ---- saisie tolérante : on essaie aussi les variantes d'une faute de frappe courante ---- */
+const INVIS=/[­͏؜ᅟᅠ឴឵᠋-᠏​-‏‪-‮⁠-⁯ㅤ︀-️﻿ﾠ]/g;
+const clean=v=>String(v||'').normalize('NFKC').replace(INVIS,'').replace(/[‘’‚‛′`´ʹʼ]/g,"'").replace(/[“”„‟″«»]/g,'"');
+const unwrap=v=>{let x=String(v||'').trim();x=x.replace(/^(identifiant|identifier|utilisateur|login|id|mot\s*de\s*passe|mdp|password|code)\s*[:=]\s*/i,'');return x.replace(/^[\s"'*_`~]+|[\s"'*_`~]+$/g,'')};
+const deaccent=v=>String(v||'').normalize('NFD').replace(/[̀-ͯ]/g,'');
+function variants(v){
+  const out=[],seen=new Set();const add=x=>{const k=norm(x);if(x!=null&&k&&!seen.has(k)){seen.add(k);out.push(x)}};
+  const c=unwrap(clean(v));
+  add(v);add(clean(v));add(c);add(deaccent(c));add(c.replace(/michaelo/gi,'michaëlo').replace(/\bnoel/gi,'noël'));
+  return out;
+}
+function candidates(id,pw){
+  const I=variants(id),W=variants(pw),out=[],seen=new Set();
+  const add=(a,b)=>{const k=norm(a)+'\n'+norm(b);if(!seen.has(k)){seen.add(k);out.push([a,b])}};
+  add(id,pw);
+  W.forEach(w=>add(id,w));I.forEach(i=>add(i,pw));
+  add(pw,id);                                   // identifiant et mot de passe inversés
+  I.forEach(i=>W.forEach(w=>add(i,w)));
+  return out.slice(0,8);
+}
+async function tryOpen(id,pw){
+  const base=await baseKey(id,pw);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(P.salt),iterations:P.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['decrypt']);
+  try{return{base,key,html:await openWith(key)}}catch(x){return null}
+}
+// Diagnostic : la personne a-t-elle les anciens accès (version du 26 novembre après-midi) ?
+async function oldAccess(id,pw){
+  try{
+    const r=await fetch(OLD_URL,{cache:'force-cache'});if(!r.ok)return false;const O=await r.json();
+    const ids=[...new Set([id,unwrap(clean(id))])],pws=[...new Set([pw,String(pw).trim(),unwrap(clean(pw))])];
+    for(const i of ids)for(const w of pws){
+      const base=await crypto.subtle.importKey('raw',enc.encode(String(i).trim().toLowerCase()+'\n'+w),'PBKDF2',false,['deriveKey']);
+      const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(O.salt),iterations:O.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+      try{await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(O.iv)},k,b64(O.ct));return true}catch(x){}
+    }
+  }catch(e){}
+  return false;
+}
+function hints(id,pw){
+  const h=[];const all=String(id)+String(pw);
+  if(/[^\x20-\x7E]/.test(clean(all).replace(/[À-ſ]/g,'')))h.push('Votre saisie contient un caractère inhabituel (emoji, symbole) : retapez les accès à la main plutôt que de les copier-coller.');
+  if(/[À-ſ]/.test(all))h.push('Votre saisie contient une lettre accentuée : vérifiez qu\'elle figure bien dans les accès reçus (correcteur automatique ?).');
+  h.push('Vous avez saisi un identifiant de <b>'+norm(id).length+'</b> caractères et un mot de passe de <b>'+norm(pw).length+'</b> caractères (sans compter espaces ni tirets) : comparez avec les accès reçus.');
+  h.push('Si votre téléphone a rempli le mot de passe tout seul, effacez-le et tapez-le vous-même : il peut s\'agir d\'un ancien mot de passe enregistré.');
+  return '<ul>'+h.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+}
 $('f').addEventListener('submit',async e=>{
   e.preventDefault();$('err').textContent='';
   if(!window.crypto||!crypto.subtle){$('err').textContent='Ce navigateur ne permet pas la connexion sécurisée. Utilisez Chrome, Edge, Firefox ou Safari à jour, à l\'adresse https://www.asso-michaelo.com.';return}
+  const id=$('u').value,pw=$('p').value;
   $('go').disabled=true;$('go').textContent='Vérification…';
   try{
     await payload();
-    const base=await baseKey($('u').value,$('p').value);
-    const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(P.salt),iterations:P.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},true,['decrypt']);
-    let html;try{html=await openWith(key)}catch(x){throw new Error('bad')}
+    const list=candidates(id,pw);let ok=null;
+    for(let i=0;i<list.length&&!ok;i++){if(i)$('go').textContent='Vérification… ('+(i+1)+'/'+list.length+')';ok=await tryOpen(list[i][0],list[i][1])}
+    if(!ok){
+      $('go').textContent='Vérification…';
+      const old=await oldAccess(id,pw);
+      throw new Error(old?'old':'bad');
+    }
     $('go').textContent='Connexion au partage…';
-    const tok=hex(new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode('michaelo-orga-api-v1'),iterations:ITER_API,hash:'SHA-256'},base,256)));
-    if($('r').checked){try{localStorage.setItem(KEY(),tob64(new Uint8Array(await crypto.subtle.exportKey('raw',key))));localStorage.setItem(TOK(),tok)}catch(x){}}
-    launch(html,tok);
-  }catch(x){$('err').textContent=x.message==='bad'?'Identifiant ou mot de passe incorrect. Vérifiez l\'orthographe (les majuscules, espaces et tirets ne comptent pas).':'Connexion impossible : '+(x.message||x)+'. Rechargez la page ou essayez un autre navigateur.';$('go').disabled=false;$('go').textContent='Se connecter →'}
+    const tok=hex(new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode('michaelo-orga-api-v1'),iterations:ITER_API,hash:'SHA-256'},ok.base,256)));
+    if($('r').checked){try{localStorage.setItem(KEY(),tob64(new Uint8Array(await crypto.subtle.exportKey('raw',ok.key))));localStorage.setItem(TOK(),tok)}catch(x){}}
+    launch(ok.html,tok);
+  }catch(x){
+    if(x.message==='old')$('err').innerHTML='Ces accès sont <b>les anciens</b> (première version de l\'espace, avant le 26 novembre au soir). Ils ont changé depuis : demandez les accès actuels au président de l\'association.';
+    else if(x.message==='bad')$('err').innerHTML='Identifiant ou mot de passe incorrect.'+hints(id,pw);
+    else $('err').textContent='Connexion impossible : '+(x.message||x)+'. Rechargez la page ou essayez un autre navigateur.';
+    $('go').disabled=false;$('go').textContent='Se connecter →';
+  }
 });
 window.addEventListener('load',async()=>{
   if(!window.crypto||!crypto.subtle)return;

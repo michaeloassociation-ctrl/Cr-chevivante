@@ -1,0 +1,337 @@
+/* ==========================================================================
+   Michaëlo — complément à style.css
+   Sous-pages (association, spectacle, nous rejoindre, contact, mentions
+   légales) + menu mobile + ligne légale du pied de page.
+   À charger après style.css.
+   ========================================================================== */
+
+/* ---------- En-tête : actions + menu mobile ---------- */
+.header-actions{ display:flex; align-items:center; gap:8px; }
+.nav-toggle{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:42px; height:42px; padding:0; flex-shrink:0;
+  background:transparent; color:var(--white);
+  border:1.5px solid rgba(255,255,255,.35); border-radius:50%;
+  cursor:pointer; touch-action:manipulation;
+}
+.nav-toggle span{ display:block; width:16px; height:1.5px; background:currentColor; position:relative; transition: background .2s ease; }
+.nav-toggle span::before, .nav-toggle span::after{
+  content:''; position:absolute; left:0; width:16px; height:1.5px; background:var(--white);
+  transition: transform .3s ease, top .3s ease;
+}
+.nav-toggle span::before{ top:-5px; }
+.nav-toggle span::after{ top:5px; }
+header.nav-open .nav-toggle span{ background:transparent; }
+header.nav-open .nav-toggle span::before{ top:0; transform:rotate(45deg); }
+header.nav-open .nav-toggle span::after{ top:0; transform:rotate(-45deg); }
+
+@media (max-width: 979.98px){
+  header.nav-open{ background: var(--navy); backdrop-filter:none; box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+  header.nav-open nav.main-nav{
+    display:flex; flex-direction:column; align-items:stretch; gap:0;
+    position:absolute; top:100%; left:0; right:0;
+    background: var(--navy);
+    padding: 4px var(--pad-container) 16px;
+    box-shadow: 0 18px 30px rgba(0,0,0,.25);
+  }
+  nav.main-nav a{
+    font-family: var(--font-sub);
+    font-size:14px; letter-spacing:.08em; text-transform:uppercase;
+    color: var(--white);
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  nav.main-nav a:last-child{ border-bottom:none; }
+}
+@media (max-width: 359px){
+  .nav-cta{ padding: 10px 14px; font-size: 11.5px; }
+}
+@media (min-width: 980px){
+  .nav-toggle{ display:none; }
+  nav.main-nav{ gap: 30px; }
+}
+@media (min-width: 1180px){
+  nav.main-nav{ gap: 40px; }
+}
+nav.main-nav a[aria-current="page"]{ color: var(--gold); }
+
+/* ---------- Bandeau de titre des sous-pages ---------- */
+.page-hero{
+  background: var(--navy);
+  color: var(--white);
+  padding: clamp(116px, 17vw, 176px) 0 clamp(44px, 7vw, 80px);
+  overflow:hidden;
+}
+.page-hero .container{ position:relative; z-index:1; }
+.page-hero .crumb{ font-size:12.5px; color: rgba(255,255,255,.55); margin: 0 0 20px; }
+.page-hero .crumb a{ text-decoration: underline; text-underline-offset: 3px; }
+.page-hero .crumb a:hover{ color: var(--gold); }
+.page-hero h1{
+  color: var(--white);
+  font-size: clamp(34px, 7vw, 62px);
+  line-height: 1.06;
+  margin-top: 12px;
+  max-width: 18ch;
+}
+.page-hero h1 em{ font-style: normal; color: var(--gold); }
+.page-hero p.lead{
+  margin: 18px 0 0; max-width: 62ch;
+  color: rgba(255,255,255,.8); font-size: 16px;
+}
+.page-hero .key-facts{
+  display:flex; flex-direction:column; gap:10px;
+  margin: 26px 0 0; padding:0; list-style:none;
+  color: rgba(255,255,255,.78); font-size: 14.5px;
+}
+.page-hero .key-facts li{ display:flex; align-items:center; gap:10px; }
+.page-hero .key-facts img{ width:16px; height:16px; flex-shrink:0; }
+@media (min-width: 640px){
+  .page-hero .key-facts{ flex-direction:row; flex-wrap:wrap; column-gap:26px; }
+}
+
+/* ---------- Sections de contenu ---------- */
+.page-section{ padding: clamp(48px, 8vw, 92px) 0; background: var(--cream); }
+.page-section.alt{ background: var(--white); }
+.page-section + .page-section:not(.alt){ border-top: 1px solid #eadfca; }
+
+.prose{ max-width: 760px; }
+.prose h2{ font-size: clamp(26px, 4.6vw, 40px); line-height:1.12; margin: 10px 0 18px; color: var(--navy); }
+.prose h3{ font-family: var(--font-sub); font-size: 18px; color: var(--navy); margin: 30px 0 8px; letter-spacing:.01em; }
+.prose p, .prose li{ color:#3a4459; font-size: 15.5px; }
+.prose p{ margin: 0 0 16px; }
+.prose p.eyebrow{ color: var(--ember); font-size: 12px; margin: 0; }
+.prose ul{ margin: 0 0 16px; padding-left: 20px; }
+.prose li{ margin-bottom: 6px; }
+.prose li::marker{ color: var(--ember); }
+.prose a{ color: var(--ember-deep); text-decoration: underline; text-underline-offset: 3px; }
+.prose a:hover{ color: var(--ember); }
+.prose .note{
+  background: var(--white); border: 1px solid #eadfca; border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px; font-size: 14.5px; margin: 20px 0;
+}
+.page-section.alt .prose .note{ background: var(--cream); }
+.prose .btn{ text-decoration:none; color: var(--navy); margin-top: 8px; white-space: normal; text-align:center; }
+
+.two-col{ display:grid; grid-template-columns: 1fr; gap: 36px; align-items:start; }
+@media (min-width: 980px){
+  .two-col{ grid-template-columns: 1.15fr .85fr; gap: 64px; }
+}
+
+/* Fiche d'identité / coordonnées */
+.id-card{
+  background: var(--white);
+  border: 1px solid #eadfca;
+  border-radius: var(--radius);
+  padding: 26px 24px;
+  box-shadow: 0 20px 44px rgba(14,29,60,.07);
+}
+.page-section.alt .id-card{ background: var(--cream); box-shadow:none; }
+.id-card h2, .id-card h3{ font-family: var(--font-sub); font-size: 17px; color: var(--navy); margin-bottom: 8px; letter-spacing:.01em; }
+.id-list{ margin:0; }
+.id-list > div{ padding: 12px 0; border-bottom: 1px dashed #e6dcc8; }
+.id-list > div:last-child{ border-bottom:none; padding-bottom:0; }
+.id-list dt{
+  font-family: var(--font-sub); font-size: 11.5px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ember);
+  margin-bottom: 2px;
+}
+.id-list dd{ margin:0; font-size: 14.5px; color: var(--navy); overflow-wrap:anywhere; }
+.id-list dd a{ text-decoration: underline; text-underline-offset: 3px; }
+.id-list dd a:hover{ color: var(--ember); }
+
+/* Grille d'actions (réutilise .pillar de style.css) */
+.pillars.wide{ margin-top: 30px; }
+@media (min-width: 980px){
+  .pillars.wide{ grid-template-columns: repeat(4, 1fr); gap: 18px; }
+}
+.page-section.alt .pillar{ background: var(--cream); }
+
+/* Liste des pôles */
+.tags{ display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 16px; padding:0; list-style:none; }
+.tags li{
+  margin:0; font-size: 13px; color: var(--navy);
+  background: var(--white); border: 1px solid #eadfca; border-radius: 999px;
+  padding: 6px 14px;
+}
+.page-section.alt .tags li{ background: var(--cream); }
+
+/* FAQ des sous-pages */
+.faq-list{ max-width: 820px; margin: 0 auto; }
+.faq-list h3{ font-family: var(--font-sub); font-size: 17px; color: var(--navy); margin: 26px 0 6px; }
+.faq-list p{ margin:0; color:#3a4459; font-size: 15px; }
+.faq-list p.eyebrow{ color: var(--ember); font-size: 12px; }
+
+/* Bloc d'appel en bas de page */
+.page-cta{ background: var(--navy); color: var(--white); padding: clamp(44px, 7vw, 76px) 0; text-align:center; overflow:hidden; }
+.page-cta .container{ position:relative; z-index:1; }
+.page-cta h2{ color: var(--white); font-size: clamp(24px, 4.4vw, 38px); line-height:1.12; }
+.page-cta p{ color: rgba(255,255,255,.75); max-width: 56ch; margin: 14px auto 26px; font-size: 15px; }
+.page-cta .actions{ display:flex; flex-direction:column; gap:12px; align-items:center; }
+@media (min-width: 480px){
+  .page-cta .actions{ flex-direction:row; justify-content:center; flex-wrap:wrap; }
+}
+
+/* Lien « en savoir plus » de la page d'accueil */
+.more-link{
+  display:inline-flex; align-items:center; gap:6px; margin-top: 22px;
+  font-family: var(--font-sub); font-size: 13px; letter-spacing:.04em; text-transform:uppercase;
+  color: var(--ember-deep);
+}
+.more-link:hover{ color: var(--ember); }
+
+/* ---------- Pied de page : identifiants légaux ---------- */
+.footer-bottom a{ text-decoration: underline; text-underline-offset: 3px; }
+.footer-bottom a:hover{ color: var(--gold); }
+.footer-legal{ display:block; }
+
+/* ==========================================================================
+   Mise à jour 30/10/2026 : logo, don en ligne, soutien de la Ville
+   ========================================================================== */
+
+/* ---------- Logo (fichier recadré : la taille affichée = la taille réelle) ---------- */
+.brand img{ height: 38px; width: auto; }
+header.scrolled .brand img{ height: 34px; }
+@media (max-width: 379px){
+  .brand img, header.scrolled .brand img{ height: 31px; }
+  .header-actions{ gap: 6px; }
+  .nav-cta{ padding: 10px 14px; font-size: 11.5px; }
+  .nav-toggle{ width: 40px; height: 40px; }
+}
+@media (min-width: 980px){
+  .brand img{ height: 44px; }
+  header.scrolled .brand img{ height: 38px; }
+}
+.footer-brand img{ height: 40px; width: auto; }
+.footer-soutien{ font-size: 12.5px !important; color: var(--gold) !important; letter-spacing: .02em; }
+
+/* Bouton d'en-tête « Faire un don » mis en avant */
+.nav-cta{ background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.nav-cta[aria-current="page"]{ box-shadow: 0 0 0 3px rgba(255,189,89,.35); }
+@media (hover:hover){ .nav-cta:hover{ background: #ffd085; } }
+@media (min-width: 980px) and (max-width: 1179.98px){
+  nav.main-nav{ gap: 24px; }
+  nav.main-nav a{ font-size: 13px; }
+}
+
+/* ---------- Bandeau « avec le soutien de » ---------- */
+.soutien{ background: var(--white); border-top: 1px solid #eadfca; border-bottom: 1px solid #eadfca; padding: 34px 0; }
+.soutien.alt{ background: var(--cream); }
+.soutien-logos{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap: 14px; text-align:center;
+}
+.soutien-michaelo{ height: 52px; width:auto; }
+.soutien-avec{
+  font-family: var(--font-sub); font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: #6a7488;
+}
+.soutien-ville{ font-family: var(--font-title); font-size: 26px; color: var(--navy); line-height:1.1; }
+.soutien-ville-img{ height: 46px; width:auto; }
+@media (min-width: 640px){ .soutien-ville-img{ height: 52px; } }
+@media (min-width: 640px){
+  .soutien-logos{ flex-direction:row; gap: 28px; }
+  .soutien-michaelo{ height: 58px; }
+}
+
+/* ---------- Page « Faire un don » ---------- */
+.don-grid{ display:grid; grid-template-columns: 1fr; gap: 28px; align-items:start; }
+@media (min-width: 980px){
+  .don-grid{ grid-template-columns: 1.1fr .9fr; gap: 56px; }
+}
+.don-form{
+  background: var(--white);
+  border: 1px solid #eadfca;
+  border-radius: var(--radius);
+  padding: 18px 10px;
+  box-shadow: 0 20px 44px rgba(14,29,60,.07);
+}
+@media (min-width: 480px){ .don-form{ padding: 26px 20px; } }
+.don-form iframe{ min-height: 560px; }
+.don-fallback{ text-align:center; font-size: 13px; color:#5a6579; margin: 14px 0 0; }
+.don-fallback a{ color: var(--ember-deep); text-decoration: underline; text-underline-offset: 3px; }
+.don-info .don-intro{ font-size: 14.5px; color:#3a4459; margin: 0 0 6px; }
+.don-info strong{ color: var(--ember-deep); }
+@media (min-width: 980px){ .don-info{ position: sticky; top: 110px; } }
+
+/* ---------- Barre de progression de la collecte (HelloAsso) — 17/11/2026 ----------
+   Le widget HelloAsso (iframe) a deux mises en page :
+   - iframe > 600 px : pilule à 40 px des bords, 70 px de haut, bord blanc de 10 px ;
+   - iframe <= 600 px : pilule à 8 px des bords, 52 px de haut, bord blanc de 4 px.
+   Le contour bleu est dessiné par-dessus, calé sur cette pilule (container queries
+   sur la largeur réelle du bloc, pas sur celle de l'écran). */
+.don-progress{ container-type: inline-size; background: var(--white); border: 1px solid #eadfca; border-radius: var(--radius); padding: 16px 18px 14px; margin: 0 0 28px; }
+.don-progress-titre{ font-family: var(--font-sub); color: var(--navy); font-size: 15px; letter-spacing: .02em; margin: 0 0 10px; }
+@media (min-width: 980px){ .don-progress{ margin-bottom: 40px; } }
+
+.don-progress-cadre{ position: relative; overflow: hidden; height: 70px; }
+.don-progress-cadre iframe{ display: block; width: 100%; height: 70px; border: 0; overflow: hidden; }
+.don-progress-cadre::after{
+  content: ""; position: absolute; pointer-events: none;
+  left: 44px; right: 44px; top: 4px; height: 62px;
+  border: 2px solid var(--navy); border-radius: 999px;
+}
+/* Largeur moyenne : mise en page « mobile » du widget */
+@container (max-width: 600px){
+  .don-progress-cadre{ height: 52px; }
+  .don-progress-cadre iframe{ height: 52px; }
+  .don-progress-cadre::after{ left: 10px; right: 10px; top: 2px; height: 48px; }
+}
+/* Téléphone : widget réduit aux 2/3 pour que le montant tienne dans la pastille orange */
+@container (max-width: 400px){
+  .don-progress-cadre{ height: 34px; }
+  .don-progress-cadre iframe{ width: 150%; height: 52px; transform: scale(.6667); transform-origin: 0 0; }
+  .don-progress-cadre::after{ left: 6.5px; right: 6.5px; top: 1.5px; height: 32px; }
+}
+
+/* ---------- Page don : où va l'argent (19/11/2026) ---------- */
+.don-usage{ margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e6dcc8; }
+.don-usage-titre{ font-family: var(--font-sub); color: var(--navy); font-size: 15px; letter-spacing: .02em; margin: 0 0 2px; }
+.don-usage-intro{ font-size: 13.5px; color:#5a6579; margin: 0 0 12px; }
+.don-usage-barre{ display:flex; gap: 3px; height: 14px; border-radius: 999px; overflow:hidden; margin-bottom: 16px; }
+.don-usage-barre span{ flex-basis: 0; min-width: 4px; }
+.u-tech{ background: var(--navy); }
+.u-orga{ background: var(--clay); }
+.u-da{ background: var(--bordeaux); }
+.u-marche{ background: var(--gold); }
+.don-usage-liste{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns: 1fr; gap: 10px 32px; }
+@media (min-width: 720px){ .don-usage-liste{ grid-template-columns: 1fr 1fr; } }
+.don-usage-liste li{ display:flex; align-items:flex-start; gap: 10px; font-size: 14px; color: var(--navy); }
+.don-usage-liste .pastille{ width: 12px; height: 12px; border-radius: 50%; flex-shrink:0; margin-top: 5px; }
+.don-usage-liste .u-txt{ flex: 1; min-width: 0; }
+.don-usage-liste strong{ display:block; font-weight: 600; }
+.don-usage-liste small{ display:block; font-size: 12.5px; color:#5a6579; }
+.don-usage-liste .u-mt{ text-align:right; font-weight: 600; white-space: nowrap; }
+
+/* FAQ de la page d'accueil */
+.faq-seo{ max-width: 820px; margin: 0 auto; padding: 64px 24px; font-family: inherit; color: #1c2b4a; }
+.faq-seo h2{ text-align: center; font-size: 1.9rem; margin-bottom: 40px; color: #1c2b4a; }
+.faq-seo h3{ font-size: 1.15rem; margin: 28px 0 8px; color: #b8892b; }
+.faq-seo p{ line-height: 1.65; margin: 0; color: #3a4560; }
+
+/* Lien souligné dans un paragraphe */
+.lien-souligne{ text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Mécènes (entreprises qui soutiennent l'événement) ----------
+   Ajouter un mécène : déposer son logo dans assets/mecenes/ puis ajouter
+   une ligne <a class="mecene" ...><img ...></a> dans .mecenes-logos.
+   Le bloc reste masqué tant qu'il ne contient aucun logo. */
+.mecenes{ max-width: 760px; margin-inline: auto; margin-top: 30px; padding-top: 26px; border-top: 1px solid #eadfca; text-align:center; }
+.mecenes:not(:has(img)){ display:none; }
+.mecenes-titre{
+  font-family: var(--font-sub); font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: #6a7488; margin: 0 0 18px;
+}
+.mecenes-logos{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap: 22px 40px;
+}
+.mecene{ display:inline-flex; align-items:center; justify-content:center; height: 76px; transition: opacity var(--transition), transform var(--transition); }
+.mecene img{ max-height: 72px; max-width: 160px; width:auto; height:auto; object-fit:contain; }
+a.mecene:hover{ opacity:.8; transform: translateY(-1px); }
+@media (min-width: 640px){
+  .mecene{ height: 92px; }
+  .mecene img{ max-height: 88px; max-width: 190px; }
+}
+/* Variante page don : bloc dans une section claire */
+.page-section .mecenes{ margin: 0 0 40px; padding: 0 0 34px; border-top: 0; border-bottom: 1px solid #eadfca; }

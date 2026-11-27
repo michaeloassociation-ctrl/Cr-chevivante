@@ -311,3 +311,27 @@ header.scrolled .brand img{ height: 34px; }
 
 /* Lien souligné dans un paragraphe */
 .lien-souligne{ text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Mécènes (entreprises qui soutiennent l'événement) ----------
+   Ajouter un mécène : déposer son logo dans assets/mecenes/ puis ajouter
+   une ligne <a class="mecene" ...><img ...></a> dans .mecenes-logos.
+   Le bloc reste masqué tant qu'il ne contient aucun logo. */
+.mecenes{ max-width: 760px; margin-inline: auto; margin-top: 30px; padding-top: 26px; border-top: 1px solid #eadfca; text-align:center; }
+.mecenes:not(:has(img)){ display:none; }
+.mecenes-titre{
+  font-family: var(--font-sub); font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: #6a7488; margin: 0 0 18px;
+}
+.mecenes-logos{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap: 22px 40px;
+}
+.mecene{ display:inline-flex; align-items:center; justify-content:center; height: 76px; transition: opacity var(--transition), transform var(--transition); }
+.mecene img{ max-height: 72px; max-width: 160px; width:auto; height:auto; object-fit:contain; }
+a.mecene:hover{ opacity:.8; transform: translateY(-1px); }
+@media (min-width: 640px){
+  .mecene{ height: 92px; }
+  .mecene img{ max-height: 88px; max-width: 190px; }
+}
+/* Variante page don : bloc dans une section claire */
+.page-section .mecenes{ margin: 0 0 40px; padding: 0 0 34px; border-top: 0; border-bottom: 1px solid #eadfca; }

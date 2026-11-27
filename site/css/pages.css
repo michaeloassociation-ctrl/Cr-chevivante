@@ -334,4 +334,4 @@ a.mecene:hover{ opacity:.8; transform: translateY(-1px); }
   .mecene img{ max-height: 88px; max-width: 190px; }
 }
 /* Variante page don : bloc dans une section claire */
-.page-section .mecenes{ margin: 0 0 40px; padding: 0 0 34px; border-top: 0; border-bottom: 1px solid #eadfca; }
+.page-section .mecenes{ margin: 0 auto 40px; padding: 0 0 34px; border-top: 0; border-bottom: 1px solid #eadfca; }
